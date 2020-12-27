@@ -18,11 +18,11 @@ def initialize_openhardwaremonitor():
     from OpenHardwareMonitor import Hardware
 
     handle = Hardware.Computer()
-    handle.MainboardEnabled = True
-    handle.CPUEnabled = True
-    handle.RAMEnabled = True
-    handle.GPUEnabled = True
-    handle.HDDEnabled = True
+    handle.MainboardEnabled = config.MAINBOARD_ENABLED
+    handle.CPUEnabled = config.CPU_ENABLED
+    handle.RAMEnabled = config.RAM_ENABLED
+    handle.GPUEnabled = config.GPU_ENABLED
+    handle.HDDEnabled = config.HDD_ENABLED
     handle.Open()
     return handle
 
