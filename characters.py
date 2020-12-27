@@ -1,0 +1,3 @@
+SEQUENCE_START = '<'
+SEQUENCE_END = '>'
+SEPARATOR = ','
