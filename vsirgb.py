@@ -40,7 +40,7 @@ def print_info(handle):
             print(f"\t{subHardware.Name}")
             subHardware.Update()
             for sensor in subHardware:
-                print("\t\t- %-16s%-16s%-16s" % (f"{sensortypes[sensor.SensorType]} ({sensor.SensorType})",
+                print("\t\t- %-24s%-24s%-24s" % (f"{sensortypes[sensor.SensorType]} ({sensor.SensorType})",
                                                  f"{sensor.Name} ({sensor.Index})",
                                                  sensor.Value))
 
@@ -53,6 +53,7 @@ def get_data(handle):
                             f"{sensor.Index}{chars.SEPARATOR}"
                             f"{sensor.Name}{chars.SEPARATOR}"
                             f"{sensor.Value}{chars.SEPARATOR}")
+    data_string = data_string[:-1] + chars.SEQUENCE_END
     return data_string
         
     
