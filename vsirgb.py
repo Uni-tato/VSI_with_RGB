@@ -28,14 +28,25 @@ def initialize_openhardwaremonitor():
 
 
 def print_info(handle):
+    '''
+        Creates a nice little table of info.
+        Very useful when editing the arduino code.
+    '''
+    
     for hardware in HardwareHandle.Hardware:
         print(f"{hwtypes[hardware.HardwareType]} ({hardware.HardwareType}), {hardware.Name}:")
         hardware.Update()
+        # Probably the first update, in some cases sensors will return none,
+        # the user should know which sensors return none so they can plan accordingly or fix.
+
+        # Print the sensor data.
         for sensor in hardware.Sensors:
             print("\t- %-24s%-24s%-24s" % (f"{sensortypes[sensor.SensorType]} ({sensor.SensorType})",
                                            f"{sensor.Name} ({sensor.Index})",
                                            sensor.Value))
 
+        # Does the same thing with subhardware.
+        # Note: subhardware is not yet sent to controller.
         for subHardware in hardware.SubHardware:
             print(f"\t{subHardware.Name}")
             subHardware.Update()
@@ -45,15 +56,19 @@ def print_info(handle):
                                                  sensor.Value))
 
 def get_data(handle):
+    '''
+        Updates the hardware and compiles the data into a simple packet.
+    '''
     data_string = chars.SEQUENCE_START
     for hardware in handle.Hardware:
         hardware.Update()
+        # Nonetypes should be handled controller side to keep this as minimal as possible.
         for sensor in hardware.Sensors:
             data_string += (f"{hardware.HardwareType}{chars.SEPARATOR}"
                             f"{sensor.SensorType}{chars.SEPARATOR}"
                             f"{sensor.Index}{chars.SEPARATOR}"
                             f"{sensor.Value}{chars.SEPARATOR}")
-    data_string = data_string[:-1] + chars.SEQUENCE_END
+    data_string = data_string[:-1] + chars.SEQUENCE_END # replaces last sep char with the end char.
     return data_string
         
     
