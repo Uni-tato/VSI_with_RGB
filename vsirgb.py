@@ -50,8 +50,8 @@ def get_data(handle):
         hardware.Update()
         for sensor in hardware.Sensors:
             data_string += (f"{hardware.HardwareType}{chars.SEPARATOR}"
+                            f"{sensor.SensorType}{chars.SEPARATOR}"
                             f"{sensor.Index}{chars.SEPARATOR}"
-                            f"{sensor.Name}{chars.SEPARATOR}"
                             f"{sensor.Value}{chars.SEPARATOR}")
     data_string = data_string[:-1] + chars.SEQUENCE_END
     return data_string
