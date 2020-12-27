@@ -1,6 +1,7 @@
 from time import sleep
 
-import clr #package pythonnet, not clr
+import clr # pythonnet package
+import serial
 
 import characters as chars
 import config
@@ -32,7 +33,6 @@ def print_info(handle):
         Creates a nice little table of info.
         Very useful when editing the arduino code.
     '''
-    
     for hardware in HardwareHandle.Hardware:
         print(f"{hwtypes[hardware.HardwareType]} ({hardware.HardwareType}), {hardware.Name}:")
         hardware.Update()
@@ -71,6 +71,11 @@ def get_data(handle):
     data_string = data_string[:-1] + chars.SEQUENCE_END # replaces last sep char with the end char.
     return data_string
         
+def send(data_string):
+    '''
+        Uses serial communication to send the data string to the controller.
+    '''
+    controller = serial.Serial(config.PORT, config.BAUDRATE, config.TIMEOUT)
     
 
     
@@ -79,7 +84,7 @@ if __name__ == "__main__":
     print_info(HardwareHandle)
     while True:
         sleep(waittime)
-        #send(get_data(HardwareHandle))
+        send(get_data(HardwareHandle))
         print("hello")
     
 
