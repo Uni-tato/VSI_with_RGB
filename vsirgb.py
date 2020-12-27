@@ -5,9 +5,7 @@ import clr #package pythonnet, not clr
 import characters as chars
 import config
 
-
-UPDATES_PER_MINUTE = 60
-waittime = 60/UPDATES_PER_MINUTE
+waittime = 60/config.UPDATES_PER_MINUTE
 
 hwtypes = ['Mainboard','SuperIO','CPU','RAM','GpuNvidia','GpuAti','TBalancer','Heatmaster','HDD']
 sensortypes = ['Voltage','Clock','Temperature','Load','Fan','Flow','Control','Level','Factor','Power','Data','SmallData']
