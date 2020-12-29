@@ -71,20 +71,22 @@ def get_data(handle):
     data_string = data_string[:-1] + chars.SEQUENCE_END # replaces last sep char with the end char.
     return data_string
         
-def send(data_string):
+def send(data_string, serial):
     '''
         Uses serial communication to send the data string to the controller.
     '''
-    controller = serial.Serial(config.PORT, config.BAUDRATE, config.TIMEOUT)
-    
+    raw = bytes(data_string, 'utf-8')
+    serial.write(raw)
 
     
 if __name__ == "__main__":
     HardwareHandle = initialize_openhardwaremonitor()
-    print_info(HardwareHandle)
+    #print_info(HardwareHandle)
+    serial = serial.Serial(port = config.PORT, baudrate = config.BAUDRATE)
+    sleep(1) # give it a little time to make sure it's connected
     while True:
         sleep(waittime)
-        send(get_data(HardwareHandle))
+        send(get_data(HardwareHandle), serial)
         print("hello")
     
 
