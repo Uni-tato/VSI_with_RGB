@@ -3,16 +3,7 @@
 #define DELAY_TIME 100
 #define DATA_LENGTH_LIMIT 512
 
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(BAUDRATE);
-  while (!Serial){
-    delay(10); // Wait until devices connect.
-  }
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
+void ping_data(){
   if (Serial.available()){
     char data[DATA_LENGTH_LIMIT];
     int i = 0;
@@ -23,5 +14,18 @@ void loop() {
     data[i] = '\0';
     Serial.println(data);
   }
+}
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(BAUDRATE);
+  while (!Serial){
+    delay(10); // Wait until devices connect.
+  }
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  ping_data();
   delay(DELAY_TIME);
 }
