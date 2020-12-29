@@ -79,7 +79,7 @@ def send(data_string, serial):
     serial.write(raw)
 
 def read(serial):
-    data = serial.read()
+    data = serial.readline()
     return data if data else None
     
 if __name__ == "__main__":
