@@ -80,8 +80,7 @@ def send(data_string, serial):
 
 def read(serial):
     data = serial.read()
-    if data:
-        print(data)
+    return data if data else None
     
 if __name__ == "__main__":
     HardwareHandle = initialize_openhardwaremonitor()
@@ -92,7 +91,7 @@ if __name__ == "__main__":
         sleep(waittime)
         send(get_data(HardwareHandle), serial)
         print("hello")
-        read(serial)
+        print(read(serial))
     
 
 
