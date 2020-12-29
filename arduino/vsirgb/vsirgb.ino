@@ -16,7 +16,7 @@ void loop() {
     char data = Serial.read();
     char str[2];
     str[0] = data;
-    str[1] = '/0';
+    str[1] = '\0';
     Serial.print(str);
   }
   delay(DELAY_TIME);
