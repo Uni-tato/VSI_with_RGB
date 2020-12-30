@@ -2,6 +2,8 @@ from time import sleep
 
 import clr # pythonnet package
 import serial
+import json
+import re
 
 import characters as chars
 import config
@@ -34,7 +36,7 @@ def print_info(handle):
         Creates a nice little table of info.
         Very useful when editing the arduino code.
     '''
-    for hardware in HardwareHandle.Hardware:
+    for hardware in handle.Hardware:
         print(f"{hwtypes[hardware.HardwareType]} ({hardware.HardwareType}), {hardware.Name}:")
         hardware.Update()
         # Probably the first update, in some cases sensors will return none,
@@ -56,28 +58,41 @@ def print_info(handle):
                                                  f"{sensor.Name} ({sensor.Index})",
                                                  sensor.Value))
 
-def get_data(handle):
-    '''
-        Updates the hardware and compiles the data into a simple packet.
-    '''
-    data_string = chars.SEQUENCE_START
+##def get_data(handle):
+##    '''
+##        Updates the hardware and compiles the data into a simple packet.
+##    '''
+##    data_string = chars.SEQUENCE_START
+##    for hardware in handle.Hardware:
+##        hardware.Update()
+##        # Nonetypes should be handled controller side to keep this as minimal as possible.
+##        for sensor in hardware.Sensors:
+##            data_string += (f"{hardware.HardwareType}{chars.SEPARATOR}"
+##                            f"{sensor.SensorType}{chars.SEPARATOR}"
+##                            f"{sensor.Index}{chars.SEPARATOR}"
+##                            f"{sensor.Value}{chars.SEPARATOR}")
+##    data_string = data_string[:-1] + chars.SEQUENCE_END # replaces last sep char with the end char.
+##    return data_string
+##        
+##def send(data_string, serial):
+##    '''
+##        Uses serial communication to send the data string to the controller.
+##    '''
+##    raw = bytes(data_string, 'utf-8')
+##    serial.write(raw)
+
+def get_settings():
+    with open("settings.json") as file:
+        string = file.read()
+    for sub_string in re.findall(r'(//[^\n]*)\n', string):
+        string = string.replace(sub_string, '') # Gotta find a better way of doing this.
+    settings = json.loads(string)
+    return settings
+
+def read_and_send(handle, serial):
+    settings = get_settings()
     for hardware in handle.Hardware:
         hardware.Update()
-        # Nonetypes should be handled controller side to keep this as minimal as possible.
-        for sensor in hardware.Sensors:
-            data_string += (f"{hardware.HardwareType}{chars.SEPARATOR}"
-                            f"{sensor.SensorType}{chars.SEPARATOR}"
-                            f"{sensor.Index}{chars.SEPARATOR}"
-                            f"{sensor.Value}{chars.SEPARATOR}")
-    data_string = data_string[:-1] + chars.SEQUENCE_END # replaces last sep char with the end char.
-    return data_string
-        
-def send(data_string, serial):
-    '''
-        Uses serial communication to send the data string to the controller.
-    '''
-    raw = bytes(data_string, 'utf-8')
-    serial.write(raw)
 
 def read(serial):
     data = serial.readline()
@@ -88,11 +103,12 @@ if __name__ == "__main__":
     #print_info(HardwareHandle)
     serial = serial.Serial(port = config.PORT, baudrate = config.BAUDRATE)
     sleep(1) # give it a little time to make sure it's connected
+    print("ready")
     while True:
-        sleep(waittime)
-        send(get_data(HardwareHandle), serial)
-        print("hello")
-        print(read(serial))
+        pass
+        #sleep(waittime)
+        #read_and_send(HardwareHandle, serial)
+        
     
 
 
