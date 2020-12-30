@@ -1,6 +1,11 @@
 import numpy as np
 import math
 
+RED = [255,0,0]
+GREEN = [0,255,0]
+BLUE = [0,0,255]
+WHITE = [255,255,255]
+OFF = [0,0,0]
 
 def get_segment_lengths(colours):
     '''
