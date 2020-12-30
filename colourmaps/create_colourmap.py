@@ -42,8 +42,10 @@ def linear(colours):
 
 
 def save(colourmap, name):
-    with open(name+".cmap", "w") as file:
+    with open(name+".cmap", "wb") as file:
         for colour in colourmap:
-            file.write(str(list(colour))+'\n')
+            for RGB in colour:
+                file.write(int(RGB).to_bytes(1,"big"))
+            file.write(b'\n')
 
     
