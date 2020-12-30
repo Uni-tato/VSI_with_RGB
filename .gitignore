@@ -1,5 +1,6 @@
 config.py
 OpenHardwareMonitorLib.sys
+settings.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
