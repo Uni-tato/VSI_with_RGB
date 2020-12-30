@@ -24,6 +24,7 @@ def initialize_openhardwaremonitor():
     handle.RAMEnabled = config.RAM_ENABLED
     handle.GPUEnabled = config.GPU_ENABLED
     handle.HDDEnabled = config.HDD_ENABLED
+    handle.FanControllerEnabled = config.FAN_CONTROLLER_ENABLED
     handle.Open()
     return handle
 
