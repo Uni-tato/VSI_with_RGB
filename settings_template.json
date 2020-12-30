@@ -1,0 +1,354 @@
+[ // You may wish to run "index and info help.py" while configuring this file.
+    [ // Motherboard
+        [ // Voltage
+        ],
+
+        [ // Clock
+        ],
+
+        [ // Temperature
+        ],
+
+        [ // Load
+        ],
+
+        [ // Fan
+        ],
+
+        [ // Flow
+        ],
+
+        [ // Control
+        ],
+
+        [ //Level
+        ],
+
+        [ // Factor
+        ],
+
+        [ // Power
+        ],
+
+        [ // Data
+        ],
+
+        [ // SmallData
+        ]
+    ],
+
+    [ // SuperIO
+        [ // Voltage
+        ],
+
+        [ // Clock
+        ],
+
+        [ // Temperature
+        ],
+
+        [ // Load
+        ],
+
+        [ // Fan
+        ],
+
+        [ // Flow
+        ],
+
+        [ // Control
+        ],
+
+        [ //Level
+        ],
+
+        [ // Factor
+        ],
+
+        [ // Power
+        ],
+
+        [ // Data
+        ],
+
+        [ // SmallData
+        ]
+    ],
+
+    [ // CPU
+        [ // Voltage
+        ],
+
+        [ // Clock
+        ],
+
+        [ // Temperature
+            {}, // Core #1
+            {}, // #2
+            {}, // #3
+            {}, // #4
+            { // Package
+                "RGB_index": 0, // The RGB that the value of this index should control.
+                "colourmap": "default\\white_red",
+                "lower_bound": "20",
+                "upper_bound": "70"
+            }
+        ],
+
+        [ // Load
+        ],
+
+        [ // Fan
+        ],
+
+        [ // Flow
+        ],
+
+        [ // Control
+        ],
+
+        [ //Level
+        ],
+
+        [ // Factor
+        ],
+
+        [ // Power
+        ],
+
+        [ // Data
+        ],
+
+        [ // SmallData
+        ]
+    ],
+
+    [ // RAM
+        [ // Voltage
+        ],
+
+        [ // Clock
+        ],
+
+        [ // Temperature
+        ],
+
+        [ // Load
+        ],
+
+        [ // Fan
+        ],
+
+        [ // Flow
+        ],
+
+        [ // Control
+        ],
+
+        [ //Level
+        ],
+
+        [ // Factor
+        ],
+
+        [ // Power
+        ],
+
+        [ // Data
+        ],
+
+        [ // SmallData
+        ]
+    ],
+
+    [ // GPU Nvidia
+        [ // Voltage
+        ],
+
+        [ // Clock
+        ],
+
+        [ // Temperature
+        ],
+
+        [ // Load
+        ],
+
+        [ // Fan
+        ],
+
+        [ // Flow
+        ],
+
+        [ // Control
+        ],
+
+        [ //Level
+        ],
+
+        [ // Factor
+        ],
+
+        [ // Power
+        ],
+
+        [ // Data
+        ],
+
+        [ // SmallData
+        ]
+    ],
+
+    [ // GPU Ati
+        [ // Voltage
+        ],
+
+        [ // Clock
+        ],
+
+        [ // Temperature
+        ],
+
+        [ // Load
+        ],
+
+        [ // Fan
+        ],
+
+        [ // Flow
+        ],
+
+        [ // Control
+        ],
+
+        [ //Level
+        ],
+
+        [ // Factor
+        ],
+
+        [ // Power
+        ],
+
+        [ // Data
+        ],
+
+        [ // SmallData
+        ]
+    ],
+
+    [ // TBalancer
+        [ // Voltage
+        ],
+
+        [ // Clock
+        ],
+
+        [ // Temperature
+        ],
+
+        [ // Load
+        ],
+
+        [ // Fan
+        ],
+
+        [ // Flow
+        ],
+
+        [ // Control
+        ],
+
+        [ //Level
+        ],
+
+        [ // Factor
+        ],
+
+        [ // Power
+        ],
+
+        [ // Data
+        ],
+
+        [ // SmallData
+        ]
+    ],
+
+    [ // Heatmaster
+        [ // Voltage
+        ],
+
+        [ // Clock
+        ],
+
+        [ // Temperature
+        ],
+
+        [ // Load
+        ],
+
+        [ // Fan
+        ],
+
+        [ // Flow
+        ],
+
+        [ // Control
+        ],
+
+        [ //Level
+        ],
+
+        [ // Factor
+        ],
+
+        [ // Power
+        ],
+
+        [ // Data
+        ],
+
+        [ // SmallData
+        ]
+    ],
+
+    [ // HDD
+        [ // Voltage
+        ],
+
+        [ // Clock
+        ],
+
+        [ // Temperature
+        ],
+
+        [ // Load
+        ],
+
+        [ // Fan
+        ],
+
+        [ // Flow
+        ],
+
+        [ // Control
+        ],
+
+        [ //Level
+        ],
+
+        [ // Factor
+        ],
+
+        [ // Power
+        ],
+
+        [ // Data
+        ],
+
+        [ // SmallData
+        ]
+    ]
+
+]
