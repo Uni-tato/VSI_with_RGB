@@ -57,7 +57,7 @@ def print_info(handle):
                 print("\t\t- %-24s%-24s%-24s" % (f"{sensortypes[sensor.SensorType]} ({sensor.SensorType})",
                                                  f"{sensor.Name} ({sensor.Index})",
                                                  sensor.Value))
-
+## Old stuff
 ##def get_data(handle):
 ##    '''
 ##        Updates the hardware and compiles the data into a simple packet.
@@ -81,6 +81,12 @@ def print_info(handle):
 ##    raw = bytes(data_string, 'utf-8')
 ##    serial.write(raw)
 
+def get_colour(colourmap, lower_bound, upper_bound, value):
+    pass
+
+def send(data):
+    pass
+
 def get_settings():
     with open("settings.json") as file:
         string = file.read()
@@ -93,6 +99,13 @@ def read_and_send(handle, serial):
     settings = get_settings()
     for hardware in handle.Hardware:
         hardware.Update()
+        for sensor in hardware.Sensors:
+            control_info = settings[hardware.HardwareType][sensor.SensorType]
+            if control_info and control_info[sensor.Index]:
+                send(get_colour(control_info[sensor.Index]["colourmap"],
+                                control_info[sensor.Index]["lower_bound"],
+                                control_info[sensor.Index]["upper_bound"],
+                                sensor.Value))
 
 def read(serial):
     data = serial.readline()
@@ -105,9 +118,8 @@ if __name__ == "__main__":
     sleep(1) # give it a little time to make sure it's connected
     print("ready")
     while True:
-        pass
-        #sleep(waittime)
-        #read_and_send(HardwareHandle, serial)
+        sleep(waittime)
+        read_and_send(HardwareHandle, serial)
         
     
 
