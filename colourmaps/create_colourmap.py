@@ -48,4 +48,16 @@ def save(colourmap, name):
                 file.write(int(RGB).to_bytes(1,"big"))
             file.write(b'\n')
 
+
+def new_map(colours, name, fade = "linear"):
+    '''
+        Creates and saves a new colourmap.
+        Colours should be entered in a 2d n by 3 list/tuple with values ranging from
+        0-255 (inclusive) eg:
+        [[0,0,0],[255,255,255],[255,0,0]]
+    '''
+    if fade == "linear":
+        cmap = linear(colours)
+    save(cmap, name)
+
     
