@@ -2,8 +2,12 @@ import numpy as np
 import math
 
 RED = [255,0,0]
+ORANGE = [253,99,00]
+YELLOW = [255,245,00]
 GREEN = [0,255,0]
 BLUE = [0,0,255]
+INDAGO = [111,0,255]
+VIOLET = [163,0,187]
 WHITE = [255,255,255]
 OFF = [0,0,0]
 
