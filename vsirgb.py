@@ -1,9 +1,9 @@
 from time import sleep
-import re
 
 import clr # pythonnet package
 import serial
 import json
+import re
 
 import characters as chars
 import config
@@ -82,7 +82,25 @@ def print_info(handle):
 ##    serial.write(raw)
 
 def get_colour(colourmap, lower_bound, upper_bound, value):
-    pass
+
+    value_range = upper_bound - lower_bound
+    unit_value = (value-lower_bound) / value_range
+    byte_value = int(unit_value*255)
+    byte_value = max(min(byte_value, 255), 0) # Keeps the value within the correct range.
+    
+    try:
+        with open(f"colourmaps\\{colourmap}.cmap", 'rb') as file:
+            file.seek(4*byte_value)
+            colour_data = file.read(3)
+            
+    except FileNotFoundError:
+        print(f"Could not find colourmap: {colourmap}")
+        return -1
+
+    return colour_data
+    
+    
+    
 
 def send(data):
     pass
