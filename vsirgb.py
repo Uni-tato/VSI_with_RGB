@@ -59,6 +59,11 @@ def print_info(handle):
                                                  sensor.Value))
 
 def get_colour(colourmap, lower_bound, upper_bound, value):
+    '''
+        Grabs the raw colour data from the specified colourmap.
+        Scales lower_bound, upper_bound, and value to fit the range 0-255 then uses
+        the scaled value as the index of what colour should be returned.
+    '''
 
     value_range = upper_bound - lower_bound
     unit_value = (value-lower_bound) / value_range
