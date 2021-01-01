@@ -89,9 +89,9 @@
             [], // #4
             [ // Package
                 {
-                "colourmap": "default\\white_red",
-                "lower_bound": 20,
-                "upper_bound": 70
+                    "colourmap": "default\\white_red",
+                    "lower_bound": 20,
+                    "upper_bound": 70
                 }
             ]
         ],

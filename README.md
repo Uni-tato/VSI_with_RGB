@@ -33,26 +33,26 @@ Next is the sensor name and sensor index, this is what you'll need to know to ed
 And the last column is simply the value from the sensor. Note: if some values are `None` then this may be resolved by launching the program as administrator. If you choose to use a value that you can only get when run this way then you will need change `REQUIRE_ADMIN` to `True` in config.py, it will also mean that you will get a popup whenever the app launches.
 Now you know everything you need to know to actually jump in and edit the settings.
 First locate the hardware that your sensor falls under eg: CPU or Motherboard, Then find the sensor type that is within that list (the `[]`s represent a list if you were unsure).
-If the sensor index of your chosen sensor is not 0 then you will need to put in some empty lists/objects (objects are represented by `{}`) make sure to separate each item with a comma.
+If the sensor index of your chosen sensor is not 0 then you will need to put in some empty lists, make sure to separate each item with a comma.
 the sensor you want to use must have n items before it in the sensor type list, for example if you wanted to use CPU package temp which has a sensor index of 4 then it must be the 5th item in the list:
 ```
 ...
 [ // Temperature
-  {}, // Core #1
-  {}, // #2
-  {}, // #3
-  {}, // #4
-  { // Package
-    "colourmap": "default\\white_red",
-    "lower_bound": 20,
-    "upper_bound": 70
-  }
+    [], // Core #1 (these will likely be different for you)
+    [], // #2
+    [], // #3
+    [], // #4
+    [ // Package
+        {
+            "colourmap": "default\\white_red",
+            "lower_bound": 20,
+            "upper_bound": 70
+        }
+    ]
 ],
 [ // Load
 ],
 ...
 ```
-Once you have these curly brackets in place you can decide how you want your leds to light up. (Leave the ones you don't care about blank.)
-inside of these brackets you need 3 things: the colourmap (a list of maps can be found in colourmaps/default, or you can make your own if none of these suit your use), the lower_bound and the_upper bound. Colourmap is in essence a list of colours, when deciding what colour to set your RGB to the value is mapped from within lower and upper bound to a value within your chosen colourmap. For example if you upper bound was 50 and your sensor is reading a temperature (or some other type) of 50 (or greater) then the RGB will be set to the very last colour in your colourmap, if your lower bound is 10 and the sensor reads 30 then the RGB will be set to whatever colour is in the middle of your colourmap.
-
-for now each sensor must control a different RGB device/port, I will improve this soon.
+Once you have these brackets in place you can decide how you want your leds to light up. (Leave the ones you don't care about blank.)
+Each set of curly brackets will be sent to a different port, within the curly brackets you need 3 things: the colourmap (a list of maps can be found in colourmaps/default, or you can make your own if none of these suit your use), the lower_bound and the_upper bound. Colourmap is in essence a list of colours, when deciding what colour to set your RGB to the value is mapped from within lower and upper bound to a value within your chosen colourmap. For example if you upper bound was 50 and your sensor is reading a temperature (or some other type) of 50 (or greater) then the RGB will be set to the very last colour in your colourmap, if your lower bound is 10 and the sensor reads 30 then the RGB will be set to whatever colour is in the middle of your colourmap.
