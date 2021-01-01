@@ -57,29 +57,6 @@ def print_info(handle):
                 print("\t\t- %-24s%-24s%-24s" % (f"{sensortypes[sensor.SensorType]} ({sensor.SensorType})",
                                                  f"{sensor.Name} ({sensor.Index})",
                                                  sensor.Value))
-## Old stuff
-##def get_data(handle):
-##    '''
-##        Updates the hardware and compiles the data into a simple packet.
-##    '''
-##    data_string = chars.SEQUENCE_START
-##    for hardware in handle.Hardware:
-##        hardware.Update()
-##        # Nonetypes should be handled controller side to keep this as minimal as possible.
-##        for sensor in hardware.Sensors:
-##            data_string += (f"{hardware.HardwareType}{chars.SEPARATOR}"
-##                            f"{sensor.SensorType}{chars.SEPARATOR}"
-##                            f"{sensor.Index}{chars.SEPARATOR}"
-##                            f"{sensor.Value}{chars.SEPARATOR}")
-##    data_string = data_string[:-1] + chars.SEQUENCE_END # replaces last sep char with the end char.
-##    return data_string
-##        
-##def send(data_string, serial):
-##    '''
-##        Uses serial communication to send the data string to the controller.
-##    '''
-##    raw = bytes(data_string, 'utf-8')
-##    serial.write(raw)
 
 def get_colour(colourmap, lower_bound, upper_bound, value):
 
@@ -98,9 +75,6 @@ def get_colour(colourmap, lower_bound, upper_bound, value):
         return -1
 
     return colour_data
-    
-    
-    
 
 def send(data):
     pass
