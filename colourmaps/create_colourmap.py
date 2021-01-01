@@ -1,6 +1,15 @@
 import numpy as np
 import math
 
+RED = [255,0,0]
+ORANGE = [253,99,00]
+YELLOW = [255,245,00]
+GREEN = [0,255,0]
+BLUE = [0,0,255]
+INDAGO = [111,0,255]
+VIOLET = [163,0,187]
+WHITE = [255,255,255]
+OFF = [0,0,0]
 
 def get_segment_lengths(colours):
     '''
@@ -47,5 +56,17 @@ def save(colourmap, name):
             for RGB in colour:
                 file.write(int(RGB).to_bytes(1,"big"))
             file.write(b'\n')
+
+
+def new_map(colours, name, fade = "linear"):
+    '''
+        Creates and saves a new colourmap.
+        Colours should be entered in a 2d n by 3 list/tuple with values ranging from
+        0-255 (inclusive) eg:
+        [[0,0,0],[255,255,255],[255,0,0]]
+    '''
+    if fade == "linear":
+        cmap = linear(colours)
+    save(cmap, name)
 
     

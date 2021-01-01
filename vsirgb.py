@@ -1,9 +1,9 @@
 from time import sleep
+import re
 
 import clr # pythonnet package
 import serial
 import json
-import re
 
 import characters as chars
 import config

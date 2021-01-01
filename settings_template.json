@@ -88,7 +88,7 @@
             {}, // #3
             {}, // #4
             { // Package
-                "RGB_index": 0, // The RGB that the value of this index should control.
+                "RGB_index": 0, // The RGB device that the value of this sensor should control.
                 "colourmap": "default\\white_red",
                 "lower_bound": 20,
                 "upper_bound": 70
