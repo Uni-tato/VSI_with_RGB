@@ -1,11 +1,10 @@
 from time import sleep
-import re
 
 import clr # pythonnet package
 import serial
 import json
+import re
 
-import characters as chars
 import config
 
 waittime = 60/config.UPDATES_PER_MINUTE
@@ -57,35 +56,36 @@ def print_info(handle):
                 print("\t\t- %-24s%-24s%-24s" % (f"{sensortypes[sensor.SensorType]} ({sensor.SensorType})",
                                                  f"{sensor.Name} ({sensor.Index})",
                                                  sensor.Value))
-## Old stuff
-##def get_data(handle):
-##    '''
-##        Updates the hardware and compiles the data into a simple packet.
-##    '''
-##    data_string = chars.SEQUENCE_START
-##    for hardware in handle.Hardware:
-##        hardware.Update()
-##        # Nonetypes should be handled controller side to keep this as minimal as possible.
-##        for sensor in hardware.Sensors:
-##            data_string += (f"{hardware.HardwareType}{chars.SEPARATOR}"
-##                            f"{sensor.SensorType}{chars.SEPARATOR}"
-##                            f"{sensor.Index}{chars.SEPARATOR}"
-##                            f"{sensor.Value}{chars.SEPARATOR}")
-##    data_string = data_string[:-1] + chars.SEQUENCE_END # replaces last sep char with the end char.
-##    return data_string
-##        
-##def send(data_string, serial):
-##    '''
-##        Uses serial communication to send the data string to the controller.
-##    '''
-##    raw = bytes(data_string, 'utf-8')
-##    serial.write(raw)
 
 def get_colour(colourmap, lower_bound, upper_bound, value):
-    pass
+    '''
+        Grabs the raw colour data from the specified colourmap.
+        Scales lower_bound, upper_bound, and value to fit the range 0-255 then uses
+        the scaled value as the index of what colour should be returned.
+    '''
 
-def send(data):
-    pass
+    if value == None:
+        # If this is happening then it probably means you're not running the script as admin.
+        value = 0
+    
+    value_range = upper_bound - lower_bound
+    unit_value = (value-lower_bound) / value_range
+    byte_value = int(unit_value*255)
+    byte_value = max(min(byte_value, 255), 0) # Keeps the value within the correct range.
+    
+    try:
+        with open(f"colourmaps\\{colourmap}.cmap", 'rb') as file:
+            file.seek(4*byte_value)
+            colour_data = file.read(3)
+            
+    except FileNotFoundError:
+        print(f"Could not find colourmap: {colourmap}")
+        return -1
+
+    return colour_data
+
+def send(serial, data):
+    serial.write(data)
 
 def get_settings():
     with open("settings.json") as file:
@@ -102,7 +102,7 @@ def read_and_send(handle, serial):
         for sensor in hardware.Sensors:
             control_info = settings[hardware.HardwareType][sensor.SensorType]
             if control_info and control_info[sensor.Index]:
-                send(get_colour(control_info[sensor.Index]["colourmap"],
+                send(serial, get_colour(control_info[sensor.Index]["colourmap"],
                                 control_info[sensor.Index]["lower_bound"],
                                 control_info[sensor.Index]["upper_bound"],
                                 sensor.Value))
@@ -110,8 +110,21 @@ def read_and_send(handle, serial):
 def read(serial):
     data = serial.readline()
     return data if data else None
-    
+
 if __name__ == "__main__":
+    
+    if config.REQUIRE_ADMIN:
+        # This will re-run the script as an admin,
+        # *however* you will not be able to see stdout.
+        # For debugging purposes I recommend opening a cmd window as admin then running
+        # vsirgb.py from there. Running it this way will allow you to monitor stdout.
+        # Source:
+        # https://gist.github.com/sylvainpelissier/ff072a6759082590a4fe8f7e070a4952
+        import pyuac, sys
+        if not pyuac.isUserAdmin():
+            print(pyuac.runAsAdmin())
+            sys.exit()
+        
     HardwareHandle = initialize_openhardwaremonitor()
     #print_info(HardwareHandle)
     serial = serial.Serial(port = config.PORT, baudrate = config.BAUDRATE)
@@ -120,7 +133,3 @@ if __name__ == "__main__":
     while True:
         sleep(waittime)
         read_and_send(HardwareHandle, serial)
-        
-    
-
-
