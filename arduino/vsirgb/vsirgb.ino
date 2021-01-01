@@ -51,6 +51,38 @@ void set_colour(byte rgb_i, byte colour_i, byte intensity){
   Serial.println((int) intensity);
 }
 
+void set_colours_from_hex(){
+  for (byte rgb_i = 0; rgb_i < RGB_COUNT; rgb_i++){
+    for (byte colour_i = 0; colour_i < 3; colour_i++){
+      byte intensity;
+      
+      intensity = from_hex(Serial.read()) * (byte) 16;
+      wait_for_serial();
+      intensity += from_hex(Serial.read());
+      if (rgb_i != RGB_COUNT-1 || colour_i != 2){
+        // Don't need to wait after very last value.
+        wait_for_serial();
+      }
+
+      set_colour(rgb_i, colour_i, intensity);
+    }
+  }
+}
+
+void set_colours_from_bytes(){
+  for (byte rgb_i = 0; rgb_i < RGB_COUNT; rgb_i++){
+    for (byte colour_i = 0; colour_i < 3; colour_i++){
+      byte intensity = Serial.read();
+      if (rgb_i != RGB_COUNT-1 || colour_i != 2){
+        // Don't need to wait after very last value.
+        wait_for_serial();
+      }
+
+      set_colour(rgb_i, colour_i, intensity);
+    }
+  }
+}
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(BAUDRATE);
@@ -62,18 +94,7 @@ void setup() {
 void loop() {
   
   if (Serial.available()){
-    for (byte rgb_i = 0; rgb_i < RGB_COUNT; rgb_i++){
-      for (byte colour_i = 0; colour_i < 3; colour_i++){
-        byte intensity;
-        
-        intensity = from_hex(Serial.read()) * (byte) 16;
-        wait_for_serial();
-        intensity += from_hex(Serial.read());
-        wait_for_serial();
-
-        set_colour(rgb_i, colour_i, intensity);
-      }
-    }
+    set_colours_from_bytes();
   }
   
   delay(DELAY_TIME);
