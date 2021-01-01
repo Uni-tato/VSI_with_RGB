@@ -5,7 +5,6 @@ import serial
 import json
 import re
 
-import characters as chars
 import config
 
 waittime = 60/config.UPDATES_PER_MINUTE
@@ -86,7 +85,6 @@ def get_colour(colourmap, lower_bound, upper_bound, value):
     return colour_data
 
 def send(serial, data):
-    print(data)
     serial.write(data)
 
 def get_settings():
@@ -104,7 +102,7 @@ def read_and_send(handle, serial):
         for sensor in hardware.Sensors:
             control_info = settings[hardware.HardwareType][sensor.SensorType]
             if control_info and control_info[sensor.Index]:
-                send(get_colour(control_info[sensor.Index]["colourmap"],
+                send(serial, get_colour(control_info[sensor.Index]["colourmap"],
                                 control_info[sensor.Index]["lower_bound"],
                                 control_info[sensor.Index]["upper_bound"],
                                 sensor.Value))
@@ -112,8 +110,21 @@ def read_and_send(handle, serial):
 def read(serial):
     data = serial.readline()
     return data if data else None
-    
+
 if __name__ == "__main__":
+    
+    if config.REQUIRE_ADMIN:
+        # This will re-run the script as an admin,
+        # *however* you will not be able to see stdout.
+        # For debugging purposes I recommend opening a cmd window as admin then running
+        # vsirgb.py from there. Running it this way will allow you to monitor stdout.
+        # Source:
+        # https://gist.github.com/sylvainpelissier/ff072a6759082590a4fe8f7e070a4952
+        import pyuac, sys
+        if not pyuac.isUserAdmin():
+            print(pyuac.runAsAdmin())
+            sys.exit()
+        
     HardwareHandle = initialize_openhardwaremonitor()
     #print_info(HardwareHandle)
     serial = serial.Serial(port = config.PORT, baudrate = config.BAUDRATE)
@@ -122,7 +133,3 @@ if __name__ == "__main__":
     while True:
         sleep(waittime)
         read_and_send(HardwareHandle, serial)
-        
-    
-
-

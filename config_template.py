@@ -15,6 +15,10 @@ GPU_ENABLED = True
 HDD_ENABLED = True
 FAN_CONTROLLER_ENABLED = True
 
+REQUIRE_ADMIN = False
+# Some values will not show unless you run the script as admin.
+# Setting this to True will force the script to be run as admin.
+
 # --- Update ---
 UPDATES_PER_MINUTE = 1
 # Note: to minimise the impact we don't compensate for the time it takes to
