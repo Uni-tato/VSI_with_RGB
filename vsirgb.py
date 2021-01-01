@@ -102,10 +102,13 @@ def read_and_send(handle, serial):
         for sensor in hardware.Sensors:
             control_info = settings[hardware.HardwareType][sensor.SensorType]
             if control_info and control_info[sensor.Index]:
-                send(serial, get_colour(control_info[sensor.Index]["colourmap"],
-                                control_info[sensor.Index]["lower_bound"],
-                                control_info[sensor.Index]["upper_bound"],
-                                sensor.Value))
+                print(control_info[sensor.Index])
+                for port in control_info[sensor.Index]:
+                    print(port)
+                    send(serial, get_colour(port["colourmap"],
+                                    port["lower_bound"],
+                                    port["upper_bound"],
+                                    sensor.Value))
 
 def read(serial):
     data = serial.readline()

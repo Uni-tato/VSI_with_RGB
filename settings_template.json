@@ -83,16 +83,17 @@
         ],
 
         [ // Temperature
-            {}, // Core #1
-            {}, // #2
-            {}, // #3
-            {}, // #4
-            { // Package
-                "RGB_index": 0, // The RGB device that the value of this sensor should control.
+            [], // Core #1 (these will likely be different for you)
+            [], // #2
+            [], // #3
+            [], // #4
+            [ // Package
+                {
                 "colourmap": "default\\white_red",
                 "lower_bound": 20,
                 "upper_bound": 70
-            }
+                }
+            ]
         ],
 
         [ // Load
