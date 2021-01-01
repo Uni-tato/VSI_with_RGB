@@ -65,6 +65,10 @@ def get_colour(colourmap, lower_bound, upper_bound, value):
         the scaled value as the index of what colour should be returned.
     '''
 
+    if value == None:
+        # If this is happening then it probably means you're not running the script as admin.
+        value = 0
+    
     value_range = upper_bound - lower_bound
     unit_value = (value-lower_bound) / value_range
     byte_value = int(unit_value*255)
@@ -81,8 +85,9 @@ def get_colour(colourmap, lower_bound, upper_bound, value):
 
     return colour_data
 
-def send(data):
-    pass
+def send(serial, data):
+    print(data)
+    serial.write(data)
 
 def get_settings():
     with open("settings.json") as file:
