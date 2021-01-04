@@ -52,7 +52,7 @@ def print_info(handle):
         for subHardware in hardware.SubHardware:
             print(f"\t{subHardware.Name}")
             subHardware.Update()
-            for sensor in subHardware:
+            for sensor in subHardware.Sensors:
                 print("\t\t- %-24s%-24s%-24s" % (f"{sensortypes[sensor.SensorType]} ({sensor.SensorType})",
                                                  f"{sensor.Name} ({sensor.Index})",
                                                  sensor.Value))
