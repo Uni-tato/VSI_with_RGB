@@ -50,6 +50,33 @@ def linear(colours):
     return cmap
 
 
+def step(colours):
+    '''
+        Creates a step like colourmap jumping between each colour
+
+        Colours should be an n by 3 2d list/tuple eg [[0,0,0], [255,255,255]].
+        This would create a colourmap of white to black/off.
+        
+        More than 2 colours may be specified eg: [[255,0,0],[0,255,0],[0,0,255]].
+        This will create a map from red to green to blue.
+    '''
+
+    length = 256/len(colours)
+
+    cmap = []
+
+    for n in range(len(colours)):
+        bottom = int(length*n)
+        top = int(length*(n+1))
+        cmap[bottom : top] = [colours[n]] * (top-bottom)
+
+    if len(cmap) == 255:
+        cmap.append(colours[-1])
+
+    return cmap
+        
+
+
 def save(colourmap, name):
     with open(name+".cmap", "wb") as file:
         for colour in colourmap:
