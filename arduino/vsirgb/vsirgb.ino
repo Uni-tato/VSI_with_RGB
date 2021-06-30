@@ -5,9 +5,9 @@
 
 // Make sure this matches the rate in the 'config.py' file.
 #define BAUDRATE 9600
-#define DELAY_TIME 5000
+#define DELAY_TIME 500 // Remember to lower this
 #define DATA_LENGTH_LIMIT 512
-#define RGB_COUNT 3
+#define RGB_COUNT 1
 
 #define LED_DRIVER_CHAIN_LENGTH 1
 #define DATA_PIN 4
@@ -20,7 +20,7 @@
 //Adafruit_TLC5711 tlc = Adafruit_TLC5711(LED_DRIVER_CHAIN_LENGTH, CLOCK_PIN, DATA_PIN);
 Adafruit_TLC5947 tlc = Adafruit_TLC5947(LED_DRIVER_CHAIN_LENGTH, CLOCK_PIN, DATA_PIN, LATCH_PIN);
 
-byte RGB_MAPPING[RGB_COUNT] = [0,1,2]; // define which port each led device is plugged into.
+byte RGB_MAPPING[RGB_COUNT] = {3}; // define which port each led device is plugged into.
 
 void ping_data(){
   if (Serial.available()){
@@ -50,7 +50,8 @@ void wait_for_serial(){
 }
 
 void set_colour(byte rgb_i, byte R, byte G, byte B){
-  port = RGB_MAPPING[rgb_i];
+  byte port = RGB_MAPPING[rgb_i];
+  Serial.println(R);
   tlc.setLED(port, R, G, B);
   tlc.write();
 }
@@ -60,34 +61,22 @@ void set_colours_from_hex(){
     
     byte R = from_hex(Serial.read()) * (byte) 16;
     wait_for_serial();
-    byte R += from_hex(Serial.read());
+    R += from_hex(Serial.read());
     wait_for_serial();
     
     byte G = from_hex(Serial.read()) * (byte) 16;
     wait_for_serial();
-    byte G += from_hex(Serial.read());
+    G += from_hex(Serial.read());
     wait_for_serial();
     
     byte B = from_hex(Serial.read()) * (byte) 16;
     wait_for_serial();
-    byte B += from_hex(Serial.read());
+    B += from_hex(Serial.read());
     if (rgb_i != RGB_COUNT -1){
       wait_for_serial();
     }
 
     set_colour(rgb_i, R, G, B);
-  }
-      
-      intensity = from_hex(Serial.read()) * (byte) 16;
-      wait_for_serial();
-      intensity += from_hex(Serial.read());
-      if (rgb_i != RGB_COUNT-1 || colour_i != 2){
-        // Don't need to wait after very last value.
-        wait_for_serial();
-      }
-
-      set_colour(rgb_i, colour_i, intensity);
-    }
   }
 }
 
@@ -114,9 +103,9 @@ void setup() {
   }
   
   tlc.begin();
-  if (OE >= 0){
-    pinMode(OE, OUTPUT);
-    digitalWrite(OE, LOW);
+  if (OE_PIN >= 0){
+    pinMode(OE_PIN, OUTPUT);
+    digitalWrite(OE_PIN, LOW);
   }
 }
 

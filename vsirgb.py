@@ -1,3 +1,5 @@
+#!python3.8
+
 from time import sleep
 
 import clr # pythonnet package
@@ -84,8 +86,11 @@ def get_colour(colourmap, lower_bound, upper_bound, value):
 
     return colour_data
 
+
 def send(serial, data):
+    print(data)
     serial.write(data)
+
 
 def get_settings():
     with open("settings.json") as file:
@@ -95,6 +100,7 @@ def get_settings():
     settings = json.loads(string)
     return settings
 
+
 def read_and_send(handle, serial):
     settings = get_settings()
     for hardware in handle.Hardware:
@@ -102,17 +108,19 @@ def read_and_send(handle, serial):
         for sensor in hardware.Sensors:
             control_info = settings[hardware.HardwareType][sensor.SensorType]
             if control_info and control_info[sensor.Index]:
-                print(control_info[sensor.Index])
-                for port in control_info[sensor.Index]:
-                    print(port)
-                    send(serial, get_colour(port["colourmap"],
-                                    port["lower_bound"],
-                                    port["upper_bound"],
+                #print(control_info[sensor.Index])
+                for port_info in control_info[sensor.Index]:
+                    #print(port_info)
+                    send(serial, get_colour(port_info["colourmap"],
+                                    port_info["lower_bound"],
+                                    port_info["upper_bound"],
                                     sensor.Value))
 
 def read(serial):
-    data = serial.readline()
+    byte_count = serial.inWaiting()
+    data = serial.read(byte_count)
     return data if data else None
+
 
 if __name__ == "__main__":
     
@@ -127,7 +135,6 @@ if __name__ == "__main__":
         if not pyuac.isUserAdmin():
             print(pyuac.runAsAdmin())
             sys.exit()
-        
     HardwareHandle = initialize_openhardwaremonitor()
     #print_info(HardwareHandle)
     serial = serial.Serial(port = config.PORT, baudrate = config.BAUDRATE)
