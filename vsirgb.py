@@ -1,3 +1,5 @@
+#!python3.8
+
 from time import sleep
 
 import clr # pythonnet package
@@ -82,10 +84,31 @@ def print_info(handle):
 ##    serial.write(raw)
 
 def get_colour(colourmap, lower_bound, upper_bound, value):
-    pass
+    if value == None:
+        # If this is happening then it probably means you're not running the script as admin.
+        value = 0
+    
+    value_range = upper_bound - lower_bound
+    unit_value = (value-lower_bound) / value_range
+    byte_value = int(unit_value*255)
+    byte_value = max(min(byte_value, 255), 0) # Keeps the value within the correct range.
+    
+    try:
+        with open(f"colourmaps\\{colourmap}.cmap", 'rb') as file:
+            file.seek(4*byte_value)
+            colour_data = file.read(3)
+            
+    except FileNotFoundError:
+        print(f"Could not find colourmap: {colourmap}")
+        return -1
 
-def send(data):
-    pass
+    return colour_data
+
+
+def send(serial, data):
+    print(data)
+    serial.write(data)
+
 
 def get_settings():
     with open("settings.json") as file:
@@ -95,6 +118,7 @@ def get_settings():
     settings = json.loads(string)
     return settings
 
+
 def read_and_send(handle, serial):
     settings = get_settings()
     for hardware in handle.Hardware:
@@ -102,16 +126,34 @@ def read_and_send(handle, serial):
         for sensor in hardware.Sensors:
             control_info = settings[hardware.HardwareType][sensor.SensorType]
             if control_info and control_info[sensor.Index]:
-                send(get_colour(control_info[sensor.Index]["colourmap"],
-                                control_info[sensor.Index]["lower_bound"],
-                                control_info[sensor.Index]["upper_bound"],
-                                sensor.Value))
+                #print(control_info[sensor.Index])
+                for port_info in control_info[sensor.Index]:
+                    #print(port_info)
+                    send(serial, get_colour(port_info["colourmap"],
+                                    port_info["lower_bound"],
+                                    port_info["upper_bound"],
+                                    sensor.Value))
 
 def read(serial):
-    data = serial.readline()
+    byte_count = serial.inWaiting()
+    data = serial.read(byte_count)
     return data if data else None
-    
+
+
 if __name__ == "__main__":
+    
+    if config.REQUIRE_ADMIN:
+        # This will re-run the script as an admin,
+        # *however* you will not be able to see stdout.
+        # For debugging purposes I recommend opening a cmd window as admin then running
+        # vsirgb.py from there. Running it this way will allow you to monitor stdout.
+        # Source:
+        # https://gist.github.com/sylvainpelissier/ff072a6759082590a4fe8f7e070a4952
+        import pyuac, sys
+        if not pyuac.isUserAdmin():
+            print(pyuac.runAsAdmin())
+            sys.exit()
+
     HardwareHandle = initialize_openhardwaremonitor()
     #print_info(HardwareHandle)
     serial = serial.Serial(port = config.PORT, baudrate = config.BAUDRATE)
